@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Sentiment Analyzer</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #10b981;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --border-radius: 12px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --glow: 0 0 20px rgba(99, 102, 241, 0.5);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      font-family: 'Inter', sans-serif;
+      color: var(--light);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 40px;
+      width: 100%;
+      max-width: 700px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .container::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+      z-index: -1;
+      animation: pulse 8s infinite ease-in-out;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.3; }
+      50% { transform: scale(1.2); opacity: 0.5; }
+      100% { transform: scale(0.8); opacity: 0.3; }
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #6366f1, #10b981);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    
+    .header p {
+      color: var(--gray);
+      font-size: 1rem;
+      max-width: 80%;
+      margin: 0 auto;
+    }
+    
+    .ai-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: var(--glow);
+    }
+    
+    .ai-icon::before {
+      content: "AI";
+      color: white;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    textarea {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      resize: none;
+      height: 150px;
+      transition: all 0.3s ease;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+    }
+    
+    textarea::placeholder {
+      color: var(--gray);
+    }
+    
+    .btn {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 15px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: block;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: rotate(30deg);
+      transition: all 0.6s ease;
+    }
+    
+    .btn:hover::after {
+      left: 100%;
+    }
+    
+    .result-box {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      margin-top: 30px;
+      border-left: 4px solid var(--primary);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .result-box h3 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: var(--gray);
+    }
+    
+    .sentiment {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #6366f1, #10b981);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+    
+    .result-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    }
+    
+    .pulse {
+      animation: pulse-border 2s infinite;
+    }
+    
+    @keyframes pulse-border {
+      0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+    }
+    
+    .dots {
+      display: inline-flex;
+      margin-left: 5px;
+    }
+    
+    .dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      margin: 0 2px;
+      opacity: 0;
+      animation: dot-pulse 1.5s infinite;
+    }
+    
+    .dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes dot-pulse {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.5); }
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: var(--gray);
+      font-size: 0.85rem;
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 20px;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .header p {
+        max-width: 100%;
+      }
+    }
+    
+    /* Animation for result appearance */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="ai-icon"></div>
+      <h1>Sentiment Analyzer</h1>
+      <p>Analyze the emotional tone of your text using advanced AI technology</p>
+    </div>
+    
+    <form method="POST">
+      <div class="form-group">
+        <textarea name="user_input" placeholder="Enter your text here to analyze its sentiment..." required></textarea>
+      </div>
+      <button class="btn" type="submit">
+        Analyze Sentiment
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </form>
+
+    {% if prediction %}
+      <div class="result-box pulse fade-in">
+        <h3>Analysis Result:</h3>
+        <div class="sentiment">{{ prediction }}</div>
+      </div>
+    {% endif %}
+    
+    <div class="footer">
+      Powered by advanced natural language processing
+    </div>
+  </div>
+</body>
+</html>
