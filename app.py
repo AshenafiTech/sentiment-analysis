@@ -23,10 +23,14 @@ def index():
     prediction = None
     if request.method == "POST":
         user_input = request.form["user_input"]
+        print(user_input)
         cleaned = preprocess(user_input)
         vect_input = vectorizer.transform([cleaned])
         result = model.predict(vect_input)[0]
-        prediction = "Positive 😊" if result == 1 else "Negative 😞"
+        if user_input:
+            prediction = "Positive 😊" if result == 1 else "Negative 😞"
+        else:
+            prediction = "Please enter a tweet to analyze."
     return render_template("index.html", prediction=prediction)
 
 if __name__ == "__main__":
