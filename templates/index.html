@@ -109,6 +109,151 @@
       font-size: 1.5rem;
     }
     
+    /* Help Section Styles */
+    .help-section {
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      background: rgba(15, 23, 42, 0.4);
+      overflow: hidden;
+    }
+    
+    .help-toggle {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--light);
+      padding: 15px 20px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .help-toggle:hover {
+      background: rgba(99, 102, 241, 0.1);
+    }
+    
+    .help-icon {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .help-icon.rotated {
+      transform: rotate(180deg);
+    }
+    
+    .help-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background: rgba(15, 23, 42, 0.6);
+    }
+    
+    .help-content.expanded {
+      max-height: 500px;
+    }
+    
+    .help-inner {
+      padding: 20px;
+    }
+    
+    .help-item {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .help-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .help-item h4 {
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .help-item p {
+      color: var(--gray);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    
+    /* Team Section Styles */
+    .team-section {
+      margin-bottom: 30px;
+      background: rgba(15, 23, 42, 0.4);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .team-title {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #6366f1, #10b981);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    
+    .team-member {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .team-member:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2);
+    }
+    
+    .member-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-weight: 700;
+      color: white;
+      font-size: 1.2rem;
+    }
+    
+    .member-name {
+      font-weight: 600;
+      color: var(--light);
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+    
+    .member-role {
+      color: var(--gray);
+      font-size: 0.8rem;
+    }
+    
     .form-group {
       margin-bottom: 25px;
     }
@@ -275,6 +420,10 @@
       .header p {
         max-width: 100%;
       }
+      
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
     }
     
     /* Animation for result appearance */
@@ -295,6 +444,9 @@
       <h1>Sentiment Analyzer</h1>
       <p>Analyze the emotional tone of your text using advanced AI technology</p>
     </div>
+    
+
+
     
     <form method="POST">
       <div class="form-group">
@@ -320,6 +472,71 @@
     <div class="footer">
       Powered by advanced natural language processing
     </div>
+    <br>
+    <br>
+
+    <br>
+
+    <div class="help-section">
+      <button class="help-toggle" onclick="toggleHelp()">
+        <span>Team Members</span>
+        <svg class="help-icon" id="helpIcon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+      <div class="help-content" id="helpContent">
+      
+
+    <div class="team-section">
+      <h3 class="team-title">👥 Development Team</h3>
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="member-avatar">JG</div>
+          <div class="member-name">Jiru Gutema</div>
+          <div class="member-role">Software Engineer</div>
+        </div>
+        <div class="team-member">
+          <div class="member-avatar">AG</div>
+          <div class="member-name">Ashenafi Godana</div>
+          <div class="member-role">Software Engineer</div>
+        </div>
+        <div class="team-member">
+          <div class="member-avatar">AD</div>
+          <div class="member-name">Abigya Daniel</div>
+          <div class="member-role">Software Engineer</div>
+        </div>
+        <div class="team-member">
+          <div class="member-avatar">BD</div>
+          <div class="member-name">Blen Debeb</div>
+          <div class="member-role">Software Engineer</div>
+        </div>
+        <div class="team-member">
+          <div class="member-avatar">KT</div>
+          <div class="member-name">Kalefat T</div>
+          <div class="member-role">Software Engineer</div>
+        </div>
+      </div>
+    </div>
+    
+      </div>
+    </div>
   </div>
+  
+  
+
+  <script>
+    function toggleHelp() {
+      const helpContent = document.getElementById('helpContent');
+      const helpIcon = document.getElementById('helpIcon');
+      
+      if (helpContent.classList.contains('expanded')) {
+        helpContent.classList.remove('expanded');
+        helpIcon.classList.remove('rotated');
+      } else {
+        helpContent.classList.add('expanded');
+        helpIcon.classList.add('rotated');
+      }
+    }
+  </script>
 </body>
 </html>
