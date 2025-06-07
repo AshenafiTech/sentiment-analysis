@@ -1,3 +1,39 @@
+# Table of Contents
+
+## 1. Sentiment Analysis AI Model
+
+1.1 [Project Overview](#project-overview)  
+1.2 [Dataset Source](#dataset-source)  
+1.3 [Step 1 – Dataset Extraction](#step-1--dataset-extraction)  
+1.4 [Step 2 – Import Dependencies](#step-2--import-dependencies)  
+1.5 [Step 3 – Load and Inspect the Dataset](#step-3--load-and-inspect-the-dataset)  
+1.6 [Step 4 – Simplify Sentiment Labels](#step-4--simplify-sentiment-labels)  
+1.7 [Step 5 – Preprocess the Text Data](#step-5--preprocess-the-text-data)  
+1.8 [Step 6 – Define Features and Labels](#step-6--define-features-and-labels)  
+1.9 [Step 7 – Train-Test Split](#step-7--train-test-split)  
+1.10 [Step 8 – TF-IDF Vectorization](#step-8--tf-idf-vectorization)  
+1.11 [Step 9 – Train Logistic Regression Model](#step-9--train-logistic-regression-model)  
+1.12 [Step 10 – Evaluate Model Accuracy](#step-10--evaluate-model-accuracy)  
+1.13 [Step 11 – Save and Reload Model](#step-11--save-and-reload-model)  
+1.14 [Step 12 – Predict Sentiment for Custom Input](#step-12--predict-sentiment-for-custom-input)  
+1.15 [Output Example](#output-example)  
+
+---
+
+## 2. Flask Application
+
+2.1 [Overview](#overview)  
+2.2 [Project Structure](#project-structure)  
+2.3 [Requirements](#requirements)  
+2.4 [How to Run the Application](#how-to-run-the-application)  
+2.5 [Application Features](#application-features)  
+2.6 [Sentiment Analysis Pipeline](#sentiment-analysis-pipeline)  
+2.7 [Files Explained](#files-explained)  
+2.8 [Notes](#notes)  
+2.9 [Security Tips for Production](#security-tips-for-production)  
+2.10 [Example Use Case](#example-use-case)  
+2.11 [Author & License](#author--license)  
+
 # Sentiment Analysis with Logistic Regression – Detailed Project Documentation
 
 
@@ -240,14 +276,148 @@ Negative
 ```
 
 ---
+# Flask Application Documentation
 
-## Future Work
+## Overview
 
-* Add handling for neutral sentiments.
-* Expand to multilingual sentiment analysis.
-* Deploy as an API using Flask or FastAPI.
-* Use deep learning (e.g., RNN, BERT) for more robust performance.
+The **AI Sentiment Analyzer** is a web application built with Flask that uses a pre-trained machine learning model to analyze the sentiment of user-input text. It classifies the sentiment as either **Positive** or **Negative**.
 
 ---
 
-Would you like this provided as a downloadable `README.md` file or automatically added as a markdown cell in your Jupyter Notebook?
+## Project Structure
+
+```
+sentiment_app/
+├── static/
+│   └── style.css              # Custom CSS styling for the AI interface
+├── templates/
+│   └── index.html             # HTML template rendered by Flask
+├── app.py                     # Main Flask application
+├── trained_model.sav          # Pickled trained machine learning model
+└── vectorizer.pkl             # Pickled text vectorizer (e.g., CountVectorizer or TfidfVectorizer)
+```
+
+---
+
+## Requirements
+
+Ensure the following Python packages are installed:
+
+```bash
+pip install flask nltk scikit-learn
+```
+
+Additionally, download the required NLTK resources:
+
+```python
+import nltk
+nltk.download('stopwords')
+```
+
+---
+
+## How to Run the Application
+
+1. Navigate to the project folder:
+
+   ```bash
+   cd sentiment_app
+   ```
+
+2. Start the Flask application:
+
+   ```bash
+   python app.py
+   ```
+
+3. Open the application in your web browser:
+
+   ```
+   http://127.0.0.1:5000
+   ```
+
+---
+
+## Application Features
+
+* **User Input**: Users can type a sentence or paragraph into a text area.
+* **Sentiment Prediction**: Upon submission, the application returns a sentiment classification.
+* **Modern UI**: The interface is styled with Bootstrap and custom CSS to resemble a modern AI interface.
+
+---
+
+## Sentiment Analysis Pipeline
+
+### 1. Preprocessing
+
+Text input is cleaned and normalized through the following steps:
+
+* Remove non-alphabetic characters.
+* Convert to lowercase.
+* Tokenize and remove English stopwords.
+* Apply stemming using NLTK's `PorterStemmer`.
+
+### 2. Vectorization
+
+The processed text is transformed into a numeric format using the saved `vectorizer.pkl`.
+
+### 3. Prediction
+
+The model (`trained_model.sav`) outputs:
+
+* `1` → Positive
+* `0` → Negative
+
+---
+
+## Files Explained
+
+### `app.py`
+
+Contains the main logic for serving the web app, handling requests, and performing sentiment prediction.
+
+### `index.html`
+
+Defines the layout and form for the frontend using Bootstrap and Jinja2 templating. Displays prediction results.
+
+### `style.css`
+
+Custom styles for a dark-themed, AI-inspired user interface.
+
+---
+
+## Notes
+
+* Ensure the saved model and vectorizer are consistent with the preprocessing pipeline used in the app.
+* For production, disable `debug=True` and deploy using a WSGI server such as Gunicorn or uWSGI.
+
+---
+
+## Security Tips for Production
+
+* Sanitize and validate all user inputs.
+* Use CSRF protection for forms.
+* Limit request size to mitigate potential overload or abuse.
+
+---
+
+## Example Use Case
+
+**Input:**
+
+```
+I absolutely loved the new movie. It was fantastic!
+```
+
+**Output:**
+
+```
+Sentiment: Positive
+```
+
+---
+
+## Author & License
+
+Developed by \[Jiru Gutema, Ashenafi Godana, Abigya Daniel, Kalafat]
+License: MIT (or another appropriate license)
