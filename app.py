@@ -27,10 +27,14 @@ def index():
         cleaned = preprocess(user_input)
         vect_input = vectorizer.transform([cleaned])
         result = model.predict(vect_input)[0]
-        if user_input:
-            prediction = "Positive 😊" if result == 1 else "Negative 😞"
+        prediction = None
+
+        if result == 2:
+            prediction = "Positive"
+        elif result == 1:
+            prediction = "Neutral"
         else:
-            prediction = "Please enter a tweet to analyze."
+            prediction = "Negative"
     return render_template("index.html", prediction=prediction)
 
 if __name__ == "__main__":
